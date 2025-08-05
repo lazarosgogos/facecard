@@ -14,7 +14,7 @@ jobs:
               with: 
                 python-version: '3.9'
             - name: Install dependencies
-              run: pip install requests supabase face-recognition
+              run: pip install requests supabase face-recognition beautifulsoup4
             - name: Run sync script
               env: 
                 SUPABASE_RUL: ${{ secrets.SUPABASE_URL }}
