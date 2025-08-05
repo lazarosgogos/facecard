@@ -17,7 +17,7 @@ jobs:
               run: pip install requests supabase face-recognition beautifulsoup4
             - name: Run sync script
               env: 
-                SUPABASE_RUL: ${{ secrets.SUPABASE_URL }}
+                SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
                 SUPABASE_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
               run: python sync_images.py
 
