@@ -4,7 +4,7 @@ from supabase import create_client, Client
 import os
 import re
 from datetime import datetime
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse, parse_qs
 import time
 
 # Supabase setup
@@ -52,8 +52,50 @@ def parse_title(title):
     return title.strip(), None
 
 
+def get_current_page_from_url(response_url):
+    """Extract current page number from redirected URL"""
+    parsed = urlparse(response_url)
+    query_params = parse_qs(parsed.query)
+    page = query_params.get("page", ["1"])[0]
+    return int(page)
+
+
+def fetch_event_photos_from_page(event_id, page):
+    """Fetch photos from a specific page of an event"""
+    url = f"{EVENTS_BASE}{event_id}?page={page}"
+
+    try:
+        response = requests.get(url, timeout=10)
+        if response.status_code != 200:
+            return None, None
+
+        # Check if we were redirected to page 1 (indicates we've gone beyond available pages)
+        current_page = get_current_page_from_url(response.url)
+        if page > 1 and current_page == 1:
+            return None, True  # Indicates we've reached the end
+
+        soup = BeautifulSoup(response.text, "html.parser")
+
+        # Find all photo divs
+        photo_divs = soup.find_all("div", class_="flex-items")
+        photo_urls = []
+
+        for div in photo_divs:
+            link = div.find("a", class_="gallery")
+            if link and link.get("href"):
+                photo_url = urljoin(BASE_URL, link["href"])
+                photo_urls.append(photo_url)
+
+        return photo_urls, False
+
+    except Exception as e:
+        print(f"Error fetching event {event_id} page {page}: {e}")
+        return None, None
+
+
 def fetch_event_data(event_id):
-    """Fetch event page and extract data"""
+    """Fetch event page and extract all data from all pages"""
+    # First, get the title from page 1
     url = f"{EVENTS_BASE}{event_id}"
 
     try:
@@ -71,22 +113,30 @@ def fetch_event_data(event_id):
         title = title_elem.get_text().strip()
         department, event_date = parse_title(title)
 
-        # Find all photo divs
-        photo_divs = soup.find_all("div", class_="flex-items")
-        photo_urls = []
+        # Now collect photos from all pages
+        all_photo_urls = []
+        page = 1
 
-        for div in photo_divs:
-            link = div.find("a", class_="gallery")
-            if link and link.get("href"):
-                photo_url = urljoin(BASE_URL, link["href"])
-                photo_urls.append(photo_url)
+        while True:
+            print(f"  Fetching page {page}...")
+            photo_urls, reached_end = fetch_event_photos_from_page(event_id, page)
+
+            if reached_end or photo_urls is None:
+                break
+
+            if photo_urls:
+                all_photo_urls.extend(photo_urls)
+                print(f"  Found {len(photo_urls)} photos on page {page}")
+
+            page += 1
+            time.sleep(0.5)  # Rate limiting between pages
 
         return {
             "event_id": event_id,
             "title": title,
             "department": department,
             "event_date": event_date,
-            "photo_urls": photo_urls,
+            "photo_urls": all_photo_urls,
         }
 
     except Exception as e:
@@ -110,8 +160,6 @@ def store_photo_urls(event_data):
                     "processed": False,  # Flag for feature extraction
                 }
             ).execute()
-
-            print(f"Stored URL: {filename}")
 
         except Exception as e:
             print(f"Error storing photo URL {photo_url}: {e}")
@@ -143,7 +191,7 @@ def main():
                 ).execute()
 
                 print(
-                    f"Found event: {event_data['title']} ({len(event_data['photo_urls'])} photos)"
+                    f"Found event: {event_data['title']} ({len(event_data['photo_urls'])} total photos)"
                 )
 
                 # Store photo URLs
@@ -159,7 +207,7 @@ def main():
             print(f"No event found at {current_id} (failures: {consecutive_failures})")
 
         current_id += 1
-        time.sleep(1)  # Rate limiting
+        time.sleep(1)  # Rate limiting between events
 
     print("Finished processing events")
 
