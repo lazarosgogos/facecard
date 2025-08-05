@@ -1,0 +1,23 @@
+name: Sync Images
+on: 
+    schedule: 
+        - cron: '0 0 * * 0' # At 00:00 on Sunday.
+    workflow_dispatch: 
+
+jobs:
+    sync-images:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - name: Setup Python
+              uses: actions/setup-python@v4
+              with: 
+                python-version: '3.9'
+            - name: Install dependencies
+              run: pip install requests supabase face-recognition
+            - name: Run sync script
+              env: 
+                SUPABASE_RUL: ${{ secrets.SUPABASE_URL }}
+                SUPABASE_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+              run: python sync_images.py
+
