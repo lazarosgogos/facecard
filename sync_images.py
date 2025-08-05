@@ -9,7 +9,7 @@ import time
 
 # Supabase setup
 url = os.environ.get("SUPABASE_URL")
-key = os.environ.get("SUPABASE_KEY")
+key = os.environ.get("SUPABASE_UPDATE_DB_KEY")
 supabase: Client = create_client(url, key)
 
 BASE_URL = "https://www.fotomada.gr"

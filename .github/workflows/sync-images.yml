@@ -19,5 +19,6 @@ jobs:
               env: 
                 SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
                 SUPABASE_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+                SUPABASE_UPDATE_DB_KEY: ${{ secrets.SUPABASE_UPDATE_DB_KEY }}
               run: python sync_images.py
 
