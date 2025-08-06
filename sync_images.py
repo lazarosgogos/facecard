@@ -129,7 +129,7 @@ def fetch_event_data(event_id):
                 print(f"  Found {len(photo_urls)} photos on page {page}")
 
             page += 1
-            time.sleep(0.5)  # Rate limiting between pages
+            time.sleep(0.2)  # Rate limiting between pages
 
         return {
             "event_id": event_id,
