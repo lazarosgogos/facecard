@@ -11,10 +11,17 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
+import DatePickerComponent from './DatePickerComponent';
 
 export default function UploadImageScreen() {
     const [image, setImage] = useState(null);
     const [submitting, setSubmitting] = useState(false);
+    const [selectedEvents, setSelectedEvents] = useState([]);
+
+    const handleEventsLoaded = (events) => {
+        setSelectedEvents(events);
+        // Now you can use selectedEvents elsewhere in your app
+    }
 
     const askPermissionIfNeeded = async () => {
         if (Platform.OS === 'web') return true;
@@ -118,6 +125,10 @@ export default function UploadImageScreen() {
                 disabled={!image || submitting}
                 loading={submitting}
             />
+
+            <View style={styles.container}>
+                <DatePickerComponent onEventsLoaded={handleEventsLoaded} />
+            </View>
         </SafeAreaView>
     );
 }
@@ -143,7 +154,7 @@ function CustomButton({
 const BOX_SIZE = 180;
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 16, alignItems: 'center', backgroundColor: '#fff' },
+    container: { flex: 1, padding: 16, alignItems: 'center', backgroundColor: '#fff' , marginBottom:50},
     header: { fontSize: 22, fontWeight: '700', marginVertical: 24 },
     imageBox: {
         width: BOX_SIZE,
