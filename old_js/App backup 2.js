@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, Button, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import {Ionicons} from '@expo/vector-icons';
-import { supabase } from './lib/supabase';
+import { supabase } from '../lib/supabase';
 
 export default function App(){
 

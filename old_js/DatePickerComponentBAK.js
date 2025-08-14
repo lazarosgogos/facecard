@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { supabase } from './lib/supabase'; // Adjust import path
+import { supabase } from '../lib/supabase'; // Adjust import path
 
 const DatePickerComponent = ({ onEventsLoaded }) => {
     const [date, setDate] = useState(new Date());
