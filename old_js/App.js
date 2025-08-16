@@ -12,7 +12,7 @@ import {
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import DatePickerComponent from './DatePickerComponent';
-import YearMonthEventPicker from './YearMonthEventPicker';
+import YearMonthEventPicker from '../src/YearMonthEventPicker';
 import { ScrollView } from 'react-native';
 
 export default function UploadImageScreen() {

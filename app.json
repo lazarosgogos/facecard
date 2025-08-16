@@ -3,6 +3,9 @@
     "name": "my-app",
     "slug": "my-app",
     "version": "1.0.0",
-    "userInterfaceStyle": "automatic"
+    "userInterfaceStyle": "automatic",
+    "plugins": [
+      "expo-router"
+    ]
   }
 }

@@ -11,13 +11,13 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
-import { FlatList } from "react-native-web";
+import { FlatList } from "react-native";
 import ListHeaderComponent from "./ListHeaderComponent";
 import ListFooterComponent from "./ListFooterComponent"
 
 
 export default function InitialPageComponent() {
-    const [emptyList, setEmptyList] = useState(true)
+    const [emptyList, setEmptyList] = useState(true);
     const [events, setEvents] = useState(null)
 
     const handleEventsLoaded = (fetchedEvents) => {
@@ -62,7 +62,7 @@ export default function InitialPageComponent() {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, padding: 16, alignItems: 'center', backgroundColor: '#fff', width: '450'
+        flex: 1, padding: 16, alignItems: 'center', backgroundColor: '#fff', width: '100%'
     },
     eventsList: {
         padding: 5,

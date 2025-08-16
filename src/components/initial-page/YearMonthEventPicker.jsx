@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, Platform } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { supabase } from '../lib/supabase'; // Adjust import path
+import { supabase } from '../../../lib/supabase'; // Adjust import path
 import { ScrollView } from 'react-native';
 
 const YearMonthEventPicker = ({ onEventsLoaded, handleEmptyList }) => {
@@ -246,7 +246,8 @@ const styles = StyleSheet.create({
                 color: '#333',
             },
             ios: {
-                height: 30,
+                height: 200,
+                justifyContent: 'center'
             },
             web: {
                 height: 30,

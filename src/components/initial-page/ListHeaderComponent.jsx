@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
-import YearMonthEventPicker from "../old_js/YearMonthEventPicker";
+import YearMonthEventPicker from "./YearMonthEventPicker";
 
 export default function ListHeaderComponent({ handleListIsEmpty, loadEvents }) {
     const [image, setImage] = useState(null);
