@@ -12,8 +12,9 @@ import {
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function SelectedImage() {
+export default function SelectedEvent() {
     return <SafeAreaView>
-        <Text>Selected Image page</Text>
+        <Text>Selected Event page</Text>
+
     </SafeAreaView>
 }

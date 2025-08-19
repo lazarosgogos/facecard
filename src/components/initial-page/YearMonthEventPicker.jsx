@@ -113,16 +113,16 @@ const YearMonthEventPicker = ({ onEventsLoaded, handleEmptyList }) => {
         }
     };
 
-    const renderEvent = ({ item }) => (
-        <View style={styles.eventItem}>
-            <Text style={styles.eventTitle}>{item.title}</Text>
-            <Text style={styles.eventDepartment}>{item.department}</Text>
-            <Text style={styles.eventDate}>
-                {new Date(item.event_date).toLocaleDateString()}
-            </Text>
-            <Text style={styles.eventPhotos}>{item.photo_count || 0} photos</Text>
-        </View>
-    );
+    // const renderEvent = ({ item }) => (
+    //     <View style={styles.eventItem}>
+    //         <Text style={styles.eventTitle}>{item.title}</Text>
+    //         <Text style={styles.eventDepartment}>{item.department}</Text>
+    //         <Text style={styles.eventDate}>
+    //             {new Date(item.event_date).toLocaleDateString()}
+    //         </Text>
+    //         <Text style={styles.eventPhotos}>{item.photo_count || 0} photos</Text>
+    //     </View>
+    // );
 
     return (
         // <ScrollView contentContainerStyle={{ flexGrow: 1 }}>

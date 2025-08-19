@@ -12,15 +12,13 @@ import {
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import InitialPageComponent from "../components/initial-page/InitialPageComponent";
-import { Button } from "react-native";
-import { useRouter } from "expo-router";
+
 
 export default function App() {
-    const router = useRouter();
+
     return (
         <SafeAreaView style={ styles.container }>
             <InitialPageComponent />
-            <Button onPress={() => router.navigate("/selected_image/")} title="Go to selected event"/>
         </SafeAreaView>
     )
 }
