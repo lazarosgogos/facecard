@@ -15,57 +15,16 @@ import { Ionicons } from '@expo/vector-icons';
 import YearMonthEventPicker from "./YearMonthEventPicker";
 
 export default function ListHeaderComponent({ handleListIsEmpty, loadEvents }) {
-    const [image, setImage] = useState(null);
-    const [submitting, setSubmitting] = useState(false);
     const [fetchedEvents, setFetchedEvents] = useState([]);
 
     const handleEventsLoaded = (events) => {
         setFetchedEvents(events);
-        // Now you can use selectedEvents elsewhere in your app
-        
     }
 
     useEffect(() => { loadEvents(fetchedEvents) }, [fetchedEvents])
-    const pickImage = async () => {
-        
-        const result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ['images'],
-            allowsEditing: true,
-            aspect: [4,3],
-            quality: 1,
-        });
-
-        if (!result.canceled) {
-            setImage(result.assets[0].uri)
-        }
-    }
-
+    
     return (
         <View style={styles.container}>
-            <Text style={styles.header}>Upload your image here!</Text>
-            
-            {/* Image box */}
-            <View style={styles.imageBox} >
-                {image ? (
-                    <View style={styles.imageWrapper}>
-                        <Image source={{ uri: image }} style={styles.imagePreview} />
-                        <TouchableOpacity
-                            style={styles.clearButton}
-                            onPress={() => setImage(null)}>
-                            <Ionicons name="close-circle" size={24} color="red"/>
-                        </TouchableOpacity>
-                    </View>
-                ) 
-                : 
-                (
-                    <View>
-                        <TouchableOpacity onPress={pickImage} style={styles.placeholder}>
-                            <Ionicons name="person-circle-outline" size={80} color="#888" />
-                                <Text style={styles.placeholderText}>Tap or drag an image here</Text>
-                        </TouchableOpacity>
-                    </View>
-                )}                
-            </View>
             <YearMonthEventPicker onEventsLoaded={handleEventsLoaded}
             handleEmptyList={handleListIsEmpty} />
         </View>

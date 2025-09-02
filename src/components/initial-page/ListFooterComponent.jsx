@@ -14,13 +14,19 @@ import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from "expo-router";
 import { Button } from "react-native";
+import { useSession } from "../ctx";
 
 export default function ListFooterComponent() {
     const router = useRouter();
+    const { signOut } = useSession()
     return (
         <View>
             <Text>Footer text</Text>
-            {/* <Button onPress={() => router.navigate("/selected_event/")} title="Go to selected event" /> */}
+            <Button onPress={() => {
+                        signOut()
+                        // router.navigate("/sign-in")
+                    }
+                } title="Log out" />
         </View>
     )
 }

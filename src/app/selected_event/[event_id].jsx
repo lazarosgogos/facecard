@@ -3,6 +3,7 @@ import { useState } from "react";
 import { SafeAreaView, Text, FlatList, StyleSheet, Image } from "react-native";
 import SelectedEventHeader from "../../components/selected-event/SelectedEventHeader";
 import { supabase } from "../../../lib/supabase";
+import UploadSelfieComponent from "../../components/UploadSelfieComponent";
 
 
 export default function SelectedEvent() {
@@ -26,17 +27,16 @@ export default function SelectedEvent() {
             keyExtractor={(item) => item.id.toString()}
             numColumns={3}
             style={styles.container}
-            columnWrapperStyle={styles.contentContainerStyle}
-            ListHeaderComponent={<SelectedEventHeader event_id={event_id} handleImageFetching={handleImageFetching}/>
-            }
+            columnWrapperStyle={styles.columnWrapperStyle}
+            ListHeaderComponent={<SelectedEventHeader event_id={event_id} handleImageFetching={handleImageFetching} />}
+            ListFooterComponent={<UploadSelfieComponent />}
         />
     </SafeAreaView>
-    
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 10,},
+    container: { flex: 1, padding: 10, },
     image: {width:100, height:100, margin:5,},
-    contentContainerStyle: {justifyContent:'center', alignItems: 'center',},
+    columnWrapperStyle: {justifyContent:'center', alignItems: 'center',},
 
 })

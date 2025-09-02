@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
     SafeAreaView,
     View,
@@ -12,9 +12,13 @@ import {
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import InitialPageComponent from "../components/initial-page/InitialPageComponent";
-
+import { Session } from "@supabase/supabase-js"
+import { useSession } from "../components/ctx";
+import { supabase } from "../../lib/supabase";
+import { useLocalSearchParams } from "expo-router";
 
 export default function App() {
+    // const session = useSession();
 
     return (
         <SafeAreaView style={ styles.container }>
