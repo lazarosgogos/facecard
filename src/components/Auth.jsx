@@ -79,7 +79,7 @@ export default function Auth() {
     )
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
     container: {
         marginTop: 40,
         padding: 12,
