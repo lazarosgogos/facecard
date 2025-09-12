@@ -163,7 +163,37 @@ def store_photo_urls(event_data):
 
         except Exception as e:
             print(f"Error storing photo URL {photo_url}: {e}")
+            
+def store_photo_urls_bulk(event_data):
+    """Store photo URLs in the database using a single bulk insert."""
+    photos_to_insert = []
 
+    # First, prepare the list of data to be inserted
+    for photo_url in event_data["photo_urls"]:
+        # Extract filename from URL
+        filename = photo_url.split("/")[-1]
+        
+        # Add the photo's metadata as a dictionary to our list
+        photos_to_insert.append(
+            {
+                "event_id": event_data["event_id"],
+                "filename": filename,
+                "url": photo_url,
+                "processed": False,  # Flag for feature extraction
+            }
+        )
+
+    # Now, perform a single bulk insert operation
+    try:
+        # Check if the list is not empty to avoid an unnecessary API call
+        if photos_to_insert:
+            supabase.table("photos").insert(photos_to_insert).execute()
+            print("Successfully performed a bulk insert for all photo URLs.")
+        else:
+            print("No photo URLs to insert.")
+
+    except Exception as e:
+        print(f"Error performing bulk insert for photo URLs: {e}")
 
 def main():
     start_id = get_latest_event_id()
@@ -195,7 +225,7 @@ def main():
                 )
 
                 # Store photo URLs
-                store_photo_urls(event_data)
+                store_photo_urls_bulk(event_data) # This should use bulk upload instead of one-by-one
 
                 consecutive_failures = 0
 
