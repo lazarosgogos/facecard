@@ -4,7 +4,7 @@ on:
   schedule:
     # This cron expression will run at 3:00 AM, 3:05 AM, 3:10 AM, etc.
     # all the way up to 4:55 AM UTC, every day.
-    - cron: '*/5 0-2 * * *'
+    - cron: '*/5 6-8 * * *'
 
 jobs:
   run-cron-job:
