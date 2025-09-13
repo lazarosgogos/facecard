@@ -4,7 +4,7 @@ on:
   schedule:
     # This cron expression will run at 00:00 AM, 00:15 AM, 00:30 AM, etc.
     # all the way up to 8:45 AM UTC, every day.
-    - cron: '*/15 0-8 * * *'
+    - cron: '*/15 * * * *'
   workflow_dispatch:
 
 jobs:
