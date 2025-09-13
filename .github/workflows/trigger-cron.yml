@@ -11,4 +11,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Make HTTP request to trigger cron
-        run: curl --request GET 'https://gogos-corps.gr/wp/trigger-cron.php?key=${{ secrets.CRON_KEY }}&reset=1'
+        run: curl --request GET 'https://gogos-corps.gr/wp/trigger-cron.php?key=${{ secrets.CRON_KEY }}'
