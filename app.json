@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "my-app",
-    "slug": "my-app",
+    "name": "Facecard",
+    "slug": "facecard",
     "version": "1.0.0",
     "userInterfaceStyle": "automatic",
     "plugins": [
@@ -9,6 +9,9 @@
       "expo-secure-store",
       "expo-web-browser"
     ],
-    "scheme": "gr.facecard"
+    "scheme": "gr.facecard",
+    "web": {
+      "output" : "static"
+    }
   }
 }

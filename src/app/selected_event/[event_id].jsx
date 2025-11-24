@@ -4,6 +4,7 @@ import { SafeAreaView, Text, FlatList, StyleSheet, Image } from "react-native";
 import SelectedEventHeader from "../../components/selected-event/SelectedEventHeader";
 import { supabase } from "../../../lib/supabase";
 import UploadSelfieComponent from "../../components/UploadSelfieComponent";
+import SelectEventFooter from "../../components/selected-event/SelectEventFooter";
 
 
 export default function SelectedEvent() {
@@ -29,7 +30,7 @@ export default function SelectedEvent() {
             style={styles.container}
             columnWrapperStyle={styles.columnWrapperStyle}
             ListHeaderComponent={<SelectedEventHeader event_id={event_id} handleImageFetching={handleImageFetching} />}
-            ListFooterComponent={<UploadSelfieComponent />}
+            ListFooterComponent={<SelectEventFooter />}
         />
     </SafeAreaView>
 }
