@@ -1,28 +1,28 @@
 import { useLocalSearchParams } from "expo-router";
 import { useState } from "react";
-import { SafeAreaView, Text, FlatList, StyleSheet, Image } from "react-native";
+import { SafeAreaView, FlatList, StyleSheet, Image } from "react-native";
 import SelectedEventHeader from "../../components/selected-event/SelectedEventHeader";
-import { supabase } from "../../../lib/supabase";
-import UploadSelfieComponent from "../../components/UploadSelfieComponent";
 import SelectEventFooter from "../../components/selected-event/SelectEventFooter";
+import { useTheme } from "../../ThemeContext";
 
 
 export default function SelectedEvent() {
     const { event_id } = useLocalSearchParams();
     const [images, setImages] = useState([]);
+    const { theme } = useTheme();
+    const styles = getStyles(theme);
 
     function handleImageFetching(fetchedImages) {
         setImages(fetchedImages)
     }
 
-    const renderImage = ({item}) => {
+    const renderImage = ({ item }) => {
         return <Image source={{ uri: item.url }} style={styles.image} />
     }
-    
+
 
     return <SafeAreaView style={styles.container}>
-        {/* <Text>Selected Event page {event_id}</Text> */}
-        <FlatList 
+        <FlatList
             data={images}
             renderItem={renderImage}
             keyExtractor={(item) => item.id.toString()}
@@ -35,9 +35,9 @@ export default function SelectedEvent() {
     </SafeAreaView>
 }
 
-const styles = StyleSheet.create({
-    container: { flex: 1, padding: 10, },
-    image: {width:100, height:100, margin:5,},
-    columnWrapperStyle: {justifyContent:'center', alignItems: 'center',},
+const getStyles = (theme) => StyleSheet.create({
+    container: { flex: 1, padding: 10, backgroundColor: theme.background },
+    image: { width: 100, height: 100, margin: 5, },
+    columnWrapperStyle: { justifyContent: 'center', alignItems: 'center', },
 
 })

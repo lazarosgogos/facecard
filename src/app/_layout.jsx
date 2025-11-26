@@ -1,22 +1,36 @@
 import { Stack } from "expo-router"
 import { SessionProvider, useSession } from "../components/ctx";
 import { SplashScreenController } from '../components/splash';
+import { ThemeProvider, useTheme } from "../ThemeContext";
 
 
 export default function RootLayout() {
 
     return (
         <SessionProvider>
-            <SplashScreenController />
-            <RootNavigator />
+            <ThemeProvider>
+                <SplashScreenController />
+                <RootNavigator />
+            </ThemeProvider>
         </SessionProvider>
     )
 }
 
 function RootNavigator() {
     const { session } = useSession();
+    const { theme } = useTheme();
 
-    return <Stack>
+    return <Stack
+        screenOptions={{
+            headerStyle: {
+                backgroundColor: theme.background,
+            },
+            headerTintColor: theme.text,
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+        }}
+    >
         <Stack.Protected guard={session}>
             <Stack.Screen name="index" options={{ headerTitle: "Home", headerShown: false, }} />
             <Stack.Screen name="selected_event/[event_id]" options={{ headerTitle: 'Selected event', headerShown: true, }} />
