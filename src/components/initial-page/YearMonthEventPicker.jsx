@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, Platform } from 'react-native';
+import { View, Text, StyleSheet, Platform } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { supabase } from '../../../lib/supabase'; // Adjust import path
-import { ScrollView } from 'react-native';
+import { supabase } from '../../../lib/supabase';
+import { useTheme } from '../../ThemeContext';
 
 const YearMonthEventPicker = ({ onEventsLoaded, handleEmptyList }) => {
     const [selectedYear, setSelectedYear] = useState('');
@@ -12,6 +12,8 @@ const YearMonthEventPicker = ({ onEventsLoaded, handleEmptyList }) => {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(false);
     const [monthsLoading, setMonthsLoading] = useState(false);
+    const { theme } = useTheme();
+    const styles = getStyles(theme);
 
     const monthNames = [
         '', 'January', 'February', 'March', 'April', 'May', 'June',
@@ -25,8 +27,8 @@ const YearMonthEventPicker = ({ onEventsLoaded, handleEmptyList }) => {
     useEffect(() => {
         if (selectedYear) {
             fetchAvailableMonths(selectedYear);
-            setSelectedMonth(''); // Reset month selection
-            setEvents([]); // Clear events
+            setSelectedMonth('');
+            setEvents([]);
         }
     }, [selectedYear]);
 
@@ -71,7 +73,7 @@ const YearMonthEventPicker = ({ onEventsLoaded, handleEmptyList }) => {
         }
     };
 
-    
+
 
     const fetchEventsByYearMonth = async (year, month) => {
         setLoading(true);
@@ -113,23 +115,10 @@ const YearMonthEventPicker = ({ onEventsLoaded, handleEmptyList }) => {
         }
     };
 
-    // const renderEvent = ({ item }) => (
-    //     <View style={styles.eventItem}>
-    //         <Text style={styles.eventTitle}>{item.title}</Text>
-    //         <Text style={styles.eventDepartment}>{item.department}</Text>
-    //         <Text style={styles.eventDate}>
-    //             {new Date(item.event_date).toLocaleDateString()}
-    //         </Text>
-    //         <Text style={styles.eventPhotos}>{item.photo_count || 0} photos</Text>
-    //     </View>
-    // );
-
     return (
-        // <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={styles.container}>
             <Text style={styles.headerText}>Select Year and Month</Text>
 
-            {/* Year Picker */}
             <View style={styles.pickerContainer}>
                 <Text style={styles.pickerLabel}>Year:</Text>
                 <View style={styles.pickerWrapper}>
@@ -150,7 +139,6 @@ const YearMonthEventPicker = ({ onEventsLoaded, handleEmptyList }) => {
                 </View>
             </View>
 
-            {/* Month Picker */}
             {selectedYear && (
                 <View style={styles.pickerContainer}>
                     <Text style={styles.pickerLabel}>Month:</Text>
@@ -178,36 +166,12 @@ const YearMonthEventPicker = ({ onEventsLoaded, handleEmptyList }) => {
                 </View>
             )}
 
-            {/* Selection Summary */}
-            {/* {selectedYear && selectedMonth && (
-                <Text style={styles.selectionText}>
-                    Showing events for {monthNames[parseInt(selectedMonth)]} {selectedYear}
-                </Text>
-            )} */}
-
-            {/* Loading */}
             {loading && <Text style={styles.loading}>Loading events...</Text>}
-            {/* <FlatList
-                data={events}
-                renderItem={renderEvent}
-                keyExtractor={(item) => item.event_id.toString()}
-                style={styles.eventsList}
-                // contentContainerStyle={{ flexGrow: 1 }}
-                ListEmptyComponent={
-                    !loading && selectedYear && selectedMonth ?
-                        <Text style={styles.noEvents}>No events found for this period</Text> :
-                        <Text style={styles.noEvents}>Select year and month to view events</Text>
-                }
-            /> */}
         </View>
-        // </ScrollView>
-
-
-
     );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
     container: {
         padding: 20,
         flex: 1,
@@ -218,7 +182,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         marginBottom: 20,
-        color: '#333',
+        color: theme.text,
     },
     pickerContainer: {
         marginBottom: 20,
@@ -227,37 +191,34 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         marginBottom: 8,
-        color: '#333',
+        color: theme.text,
     },
     pickerWrapper: {
         borderWidth: 1,
-        borderColor: '#ddd',
+        borderColor: theme.border,
         borderRadius: 8,
-        backgroundColor: '#fff',
-        // ...Platform.select({
-        //     web: {
-        //         minHeight: 50,
-        //     },
-        // }),
+        backgroundColor: theme.card,
     },
     picker: {
         ...Platform.select({
             android: {
-                color: '#333',
+                color: theme.text,
             },
             ios: {
                 height: 200,
-                justifyContent: 'center'
+                justifyContent: 'center',
+                color: theme.text,
             },
             web: {
                 height: 30,
+                color: theme.text,
             },
         }),
     },
     loadingText: {
         padding: 15,
         textAlign: 'center',
-        color: '#666',
+        color: theme.secondary,
         fontStyle: 'italic',
     },
     selectionText: {
@@ -265,8 +226,8 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         marginBottom: 15,
-        color: '#007AFF',
-        backgroundColor: '#f0f8ff',
+        color: theme.primary,
+        backgroundColor: theme.card,
         padding: 10,
         borderRadius: 8,
         margin: 'auto'
@@ -274,7 +235,7 @@ const styles = StyleSheet.create({
     loading: {
         textAlign: 'center',
         fontSize: 16,
-        color: '#666',
+        color: theme.secondary,
         marginBottom: 20,
     },
     eventsList: {
@@ -282,37 +243,36 @@ const styles = StyleSheet.create({
         margin: 'auto',
     },
     eventItem: {
-        backgroundColor: '#f5f5f5',
+        backgroundColor: theme.card,
         padding: 15,
         borderRadius: 8,
         marginBottom: 10,
-
     },
     eventTitle: {
         fontSize: 16,
         fontWeight: 'bold',
         marginBottom: 5,
+        color: theme.text,
     },
     eventDepartment: {
         fontSize: 14,
-        color: '#666',
+        color: theme.secondary,
         marginBottom: 3,
     },
     eventDate: {
         fontSize: 12,
-        color: '#007AFF',
+        color: theme.primary,
         marginBottom: 3,
     },
     eventPhotos: {
         fontSize: 12,
-        color: '#999',
+        color: theme.tertiary,
     },
     noEvents: {
         textAlign: 'center',
         fontSize: 14,
-        color: '#666',
+        color: theme.secondary,
         fontStyle: 'italic',
-        // marginTop: 20,
         padding: 20,
     },
 });

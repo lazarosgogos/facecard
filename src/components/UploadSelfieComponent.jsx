@@ -4,30 +4,30 @@ import { Ionicons } from "@expo/vector-icons"
 import * as ImagePicker from "expo-image-picker";
 import React from "react";
 import { supabase } from "../../lib/supabase";
+import { useTheme } from "../ThemeContext";
 
 
 export default function UploadSelfieComponent({ handleChangeInStatus }) {
     const [image, setImage] = useState(null);
     const [loading, setLoading] = useState(false);
+    const { theme } = useTheme();
+    const styles = getStyles(theme);
 
     useEffect(() => {
         fetchAvatar();
     }, []);
 
-    useEffect(()=>{
+    useEffect(() => {
         st = checkStatus()
         handleChangeInStatus(st)
-        // console.log('Checking status.. @UploadSelfieComponent')
     }, [image])
 
     const checkStatus = () => {
         const avatarExistsInDatabase = hasAvatarInDatabase();
-        
+
         if (image && !avatarExistsInDatabase) {
-            // alert('Avatar not uploaded!','You must upload your avatar to the database first!')
             return false;
         } else if (!image && !avatarExistsInDatabase) {
-            // alert('No image!', 'You must upload an image of yourself')
             return false;
         } else if (image && avatarExistsInDatabase) {
             return true
@@ -87,18 +87,15 @@ export default function UploadSelfieComponent({ handleChangeInStatus }) {
         try {
             const { data: { user } } = await supabase.auth.getUser();
             const UUID = user?.id;
-            // console.log('UUID:',UUID)
 
             if (!UUID) {
                 Alert.alert('User not found');
                 return;
             }
 
-            // Convert image to blob
             const response = await fetch(image);
             const blob = await response.blob();
 
-            // Upload to Supabase storage
             const { data, error } = await supabase.storage
                 .from('avatars')
                 .upload(`${UUID}/avatar.png`, blob, {
@@ -161,21 +158,21 @@ export default function UploadSelfieComponent({ handleChangeInStatus }) {
                         </TouchableOpacity>
                     </View>
                 )
-                :
-                (
-                    <View style={styles.placeholder}>
-                        <TouchableOpacity onPress={pickImage} style={styles.placeholder}>
-                            <Ionicons name="person-circle-outline" size={80} color="#888" />
-                            <Text style={styles.placeholderText}>Tap to upload an image or drag one here</Text>
-                        </TouchableOpacity>
-                    </View>
-                )}
+                    :
+                    (
+                        <View style={styles.placeholder}>
+                            <TouchableOpacity onPress={pickImage} style={styles.placeholder}>
+                                <Ionicons name="person-circle-outline" size={80} color={theme.tertiary} />
+                                <Text style={styles.placeholderText}>Tap to upload an image or drag one here</Text>
+                            </TouchableOpacity>
+                        </View>
+                    )}
             </View>
             <View style={[styles.verticallySpaced, styles.mt20]}>
-                <Button title="Upload avatar" disabled={loading || !image} onPress={() => uploadAvatar()} />
+                <Button title="Upload avatar" disabled={loading || !image} onPress={() => uploadAvatar()} color={theme.primary} />
             </View>
             <View style={[styles.verticallySpaced]}>
-                <Button title="Change image" disabled={loading} onPress={pickImage} />
+                <Button title="Change image" disabled={loading} onPress={pickImage} color={theme.primary} />
             </View>
         </View>
     )
@@ -183,37 +180,35 @@ export default function UploadSelfieComponent({ handleChangeInStatus }) {
 
 const BOX_SIZE = 180;
 
-const styles = StyleSheet.create({
-    container: { flex: 1, padding: 6, justifyContent: 'center', alignItems: 'center', borderWidth: 0, borderRadius: 20},
-    header: { fontSize: 22, fontWeight: '700', marginTop: 12 },
-    subtitle: { fontSize: 16, fontWeight: '500', color: 'gray', marginTop: 10, marginBottom: 16 },
+const getStyles = (theme) => StyleSheet.create({
+    container: { flex: 1, padding: 6, justifyContent: 'center', alignItems: 'center', borderWidth: 0, borderRadius: 20 },
+    header: { fontSize: 22, fontWeight: '700', marginTop: 12, color: theme.text },
+    subtitle: { fontSize: 16, fontWeight: '500', color: theme.secondary, marginTop: 10, marginBottom: 16 },
     imageWrapper: { width: '100%', height: '100%', position: 'relative', alignContent: 'center' },
-    imagePreview: { flex: 1, width: '100%', height: '100%', borderRadius: 12},
+    imagePreview: { flex: 1, width: '100%', height: '100%', borderRadius: 12 },
     imageBox: {
         width: BOX_SIZE,
         height: BOX_SIZE,
         borderWidth: 2,
-        borderColor: '#ccc',
+        borderColor: theme.border,
         borderRadius: 12,
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 24,
-        // overflow: 'hidden',
     },
     clearButton: {
         position: 'absolute',
         top: -8,
         right: -8,
-        backgroundColor: '#fff',
+        backgroundColor: theme.background,
         borderRadius: 12,
     },
     placeholder: { justifyContent: 'center', alignItems: 'center' },
-    placeholderText: { marginTop: 8, color: '#888', alignItems: 'center', justifyContent: "center", textAlign: 'center' },
+    placeholderText: { marginTop: 8, color: theme.tertiary, alignItems: 'center', justifyContent: "center", textAlign: 'center' },
     verticallySpaced: {
         padding: 4,
         alignSelf: 'auto',
     },
     mt20: {
-        // marginTop: 10,
     },
 })
