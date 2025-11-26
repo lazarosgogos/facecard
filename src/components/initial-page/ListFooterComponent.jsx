@@ -1,32 +1,39 @@
 
-import { useState } from "react"
 import {
-    SafeAreaView,
     View,
     Text,
-    Image,
-    TouchableOpacity,
+    Button,
     StyleSheet,
-    Alert,
-    Platform,
 } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from "expo-router";
-import { Button } from "react-native";
 import { useSession } from "../ctx";
+import { useTheme } from '../../ThemeContext';
 
 export default function ListFooterComponent() {
-    const router = useRouter();
-    const { signOut } = useSession()
+    const { signOut } = useSession();
+    const { theme } = useTheme();
+    const styles = getStyles(theme);
+
     return (
-        <View>
-            <Text>Footer text</Text>
-            <Button onPress={() => {
-                        signOut()
-                        // router.navigate("/sign-in")
-                    }
-                } title="Log out" />
+        <View style={styles.container}>
+            <Text style={styles.text}>Footer text</Text>
+            <Button
+                onPress={() => {
+                    signOut()
+                }}
+                title="Log out"
+                color={theme.primary}
+            />
         </View>
     )
 }
+
+const getStyles = (theme) => StyleSheet.create({
+    container: {
+        padding: 16,
+        alignItems: 'center',
+    },
+    text: {
+        color: theme.text,
+        marginBottom: 16,
+    },
+});
