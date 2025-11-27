@@ -125,7 +125,7 @@ const YearMonthEventPicker = ({ onEventsLoaded, handleEmptyList }) => {
                     <Picker
                         selectedValue={selectedYear}
                         onValueChange={setSelectedYear}
-                        style={styles.picker}
+                        itemStyle={styles.picker}
                     >
                         <Picker.Item label="Select a year" value="" />
                         {availableYears.map((yearData) => (
@@ -149,7 +149,7 @@ const YearMonthEventPicker = ({ onEventsLoaded, handleEmptyList }) => {
                             <Picker
                                 selectedValue={selectedMonth}
                                 onValueChange={setSelectedMonth}
-                                style={styles.picker}
+                                itemStyle={styles.picker}
                                 enabled={availableMonths.length > 0}
                             >
                                 <Picker.Item label="Select a month" value="" />

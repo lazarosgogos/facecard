@@ -18,7 +18,7 @@ export default function UploadSelfieComponent({ handleChangeInStatus }) {
     }, []);
 
     useEffect(() => {
-        st = checkStatus()
+        const st = checkStatus()
         handleChangeInStatus(st)
     }, [image])
 

@@ -11,7 +11,7 @@
     ],
     "scheme": "gr.facecard",
     "web": {
-      "output" : "static"
+      "output" : "single"
     }
   }
 }
