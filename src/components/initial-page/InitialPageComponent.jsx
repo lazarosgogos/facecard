@@ -21,6 +21,7 @@ export default function InitialPageComponent() {
     const { theme } = useTheme();
     const styles = getStyles(theme);
 
+
     const handleEventsLoaded = (fetchedEvents) => {
         setEvents(fetchedEvents);
     }
