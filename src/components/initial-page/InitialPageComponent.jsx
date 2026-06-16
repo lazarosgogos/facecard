@@ -37,6 +37,7 @@ export default function InitialPageComponent() {
                 });
             }}
         >
+
             <Text style={styles.eventTitle}>{item.title}</Text>
             <Text style={styles.eventDepartment}>{item.department}</Text>
             <Text style={styles.eventDate}>

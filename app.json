@@ -7,11 +7,12 @@
     "plugins": [
       "expo-router",
       "expo-secure-store",
-      "expo-web-browser"
+      "expo-web-browser",
+      "@react-native-community/datetimepicker"
     ],
     "scheme": "gr.facecard",
     "web": {
-      "output" : "single"
+      "output": "single"
     }
   }
 }
